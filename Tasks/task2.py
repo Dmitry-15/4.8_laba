@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8
 
-from tkinter import *
+from tkinter import Tk, Listbox, Entry
 
 
 """
@@ -33,11 +33,11 @@ def copy_item(event):
 if __name__ == '__main__':
     root = Tk()
     root.title('Перемещение текста')
-    root.geometry('200x180')
+    root.geometry('300x195')
 
     ent = Entry(root, width=20, font=36)
 
-    lbox = Listbox(width=30)
+    lbox = Listbox(width=49)
 
     ent.grid(row=1, column=1)
     lbox.grid(row=2, column=1, pady=5)

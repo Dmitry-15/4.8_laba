@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from tkinter import *
+from tkinter import Tk, Button, Listbox, EXTENDED, END
 
 
 """
@@ -15,50 +15,50 @@ from tkinter import *
 
 def add_item():
     product = []
-    select = list(lbox_first.curselection())
+    select = list(lbox_right.curselection())
     select.reverse()
     for item in select:
-        p = lbox_first.get(item)
+        p = lbox_right.get(item)
         product.append(p)
     for v in product:
-        lbox_second.insert(0, v)
+        lbox_left.insert(0, v)
     for k in select:
-        lbox_first.delete(k)
+        lbox_right.delete(k)
 
 
 def del_item():
     product = []
-    select = list(lbox_second.curselection())
+    select = list(lbox_left.curselection())
     select.reverse()
     for item in select:
-        p = lbox_second.get(item)
+        p = lbox_left.get(item)
         product.append(p)
     for v in product:
-        lbox_first.insert(0, v)
+        lbox_right.insert(0, v)
     for k in select:
-        lbox_second.delete(k)
+        lbox_left.delete(k)
 
 
 if __name__ == '__main__':
     root = Tk()
     root.title('Список продуктов')
-    root.geometry('400x200')
+    root.geometry('366x188')
 
     products = ['apple', 'bananas', 'carrot', 'bread', 'butter', 'meat', 'milk', 'tomato', 'potato', 'pineapple']
 
-    lbox_first = Listbox(selectmode=EXTENDED)
-    lbox_second = Listbox(selectmode=EXTENDED)
+    lbox_right = Listbox(selectmode=EXTENDED)
+    lbox_left = Listbox(selectmode=EXTENDED)
 
     button_right = Button(height=1, width=5, text='>>>>', command=add_item)
     button_left = Button(height=1, width=5, text='<<<<', command=del_item)
 
-    lbox_first.grid(row=1, column=1, pady=15, padx=3)
-    lbox_second.grid(row=1, column=4, pady=15)
+    lbox_right.grid(row=1, column=1, pady=15, padx=3)
+    lbox_left.grid(row=1, column=4, pady=15)
 
     button_right.grid(row=1, column=2, padx=3)
     button_left.grid(row=1, column=3, padx=5)
 
     for i in products:
-        lbox_first.insert(END, i)
+        lbox_right.insert(END, i)
 
     root.mainloop()

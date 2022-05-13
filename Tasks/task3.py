@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8
 
-from tkinter import *
+from tkinter import Tk, Button, Text, Entry, Label, CENTER
 
 
 """
@@ -36,8 +36,8 @@ def unfocus(event):
 
 if __name__ == '__main__':
     root = Tk()
-    root.title('Перемещение текста')
-    root.geometry('400x200')
+    root.title('Изменение размера текстового поля')
+    root.geometry('360x240')
 
     label1 = Label(root, text="Ширина ", font=25)
     label2 = Label(root, text="Высота ", font=25)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     ent2 = Entry(root, width=10, font=36, justify=CENTER)
 
     button = Button(height=1, width=8, text='Изменить', command=button)
-    txt = Text(root, width=5, height=5, bg="lightgrey", font=12)
+    txt = Text(root, width=20, height=10, bg="lightgrey", font=12)
 
     ent1.grid(row=1, column=1)
     ent2.grid(row=2, column=1)
