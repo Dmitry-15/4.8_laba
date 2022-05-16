@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8
 
-from tkinter import *
+from tkinter import Tk, Canvas
+import math
 
 
 """
@@ -12,39 +13,65 @@ B программе создается анимация круга, котор�
 """
 
 
-def click(event):
-    c.x = event.x + c.radius
-    c.y = event.y + c.radius
-    motion()
+class GameBall:
+    def __init__(self, width=400, height=400):
+        self.vx = 1
+        self.vy = 1
+        self.t = 0
+        self.dt = 1
+        self.i = 0
+        self.height = height
+        self.width = width
+        self.c = Canvas(root, width=self.width, height=self.height, bg="white")
+        self.c.pack()
+        self.rad = 20
+        self.ball = self.c.create_oval(self.width // 2 - self.rad, self.height // 2 - self.rad,
+                                       self.width // 2 + self.rad, self.height // 2 + self.rad, fill='blueviolet')
+
+        self.c.bind('<Button-1>', self.onclick)
+        root.after(10, self.onframe)
+
+    def onclick(self, event):
+        self.p = self.c.coords(self.ball)
+        self.dx = event.x - self.p[0]
+        self.dy = event.y - self.p[1]
+
+        self.r = math.sqrt(self.dx ** 2 + self.dy ** 2)
+
+        self.vx = self.dx / self.r
+        self.vy = self.dy / self.r
+
+        self.t += self.dt
+        self.p[0] += self.vx + 10
+        self.p[1] += self.vy + 10
+
+        if 200 > self.dx >= 100 or 200 > self.dy >= 100 or -200 < self.dx <= -100 or -200 < self.dy <= -100:
+            self.dt = 2
+        elif 300 > self.dx >= 200 or 300 > self.dy >= 200 or -300 < self.dx <= -200 or -300 < self.dy <= -200:
+            self.dt = 4
+        elif 500 > self.dx >= 300 or 500 > self.dy >= 300 or -500 < self.dx <= -300 or -500 < self.dy <= -300:
+            self.dt = 7
+        elif self.dx >= 500 or self.dy >= 500 or self.dx <= -500 or self.dy <= -500:
+            self.dt = 10
+        else:
+            self.dt = 1
+        print(self.dx, self.dy, self.dt)
+
+    def onframe(self):
+        self.c.move(self.ball, self.dt * self.vx, self.dt * self.vy)
+        self.p = self.c.coords(self.ball)
+        if self.p[1] < 0 or self.p[1] > self.height - 2 * self.rad:
+            self.vy = -self.vy
+            self.c.itemconfig(self.ball, fill='coral')
+        if self.p[0] < 0 or self.p[0] > self.width - 2 * self.rad:
+            self.vx = -self.vx
+            self.c.itemconfig(self.ball, fill='aquamarine')
+        root.after(10, self.onframe)
 
 
-def motion():
-    x = c.coords(c.ball)[2]
-    y = c.coords(c.ball)[3]
-    if c.x == x and c.y == y:
-        return
-    if c.x < x:
-        c.move(c.ball, -1, 0)
-    if c.x > x:
-        c.move(c.ball, 1, 0)
-    if c.y < y:
-        c.move(c.ball, 0, -1)
-    if c.y > y:
-        c.move(c.ball, 0, 1)
-    root.after(10, motion)
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     root = Tk()
-    root.title('Движение объекта')
-    root.geometry("500x300")
-
-    c = Canvas(root, width=500, height=300, bg="white")
-
-    c.pack()
-    c.radius = 30
-    c.ball = c.create_oval(0, 150, c.radius * 3, 150 + c.radius * 3, fill='#9400D3')
-
-    c.bind("<Button-1>", click)
-
+    root.title('Движение объекта по холсту')
+    root.resizable(False, False)
+    GameBall()
     root.mainloop()
